@@ -16,8 +16,6 @@ export class CardComponent implements OnInit {
 
   ngOnInit() {
     this.user.name;
-    this.user.title;
-    this.user.address;
   }
 
   onClick(){
