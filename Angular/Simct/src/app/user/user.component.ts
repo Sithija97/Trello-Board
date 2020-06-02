@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
+  myUser : String = 'Sithija';
+  auth = true;
   constructor() { }
 
   ngOnInit() {
@@ -14,5 +16,8 @@ export class UserComponent implements OnInit {
 
   loginMsg(value){
     console.log("hello"+ value);
+  }
+  sayHello(){
+    console.log("hello dear");
   }
 }

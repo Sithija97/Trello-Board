@@ -10,12 +10,12 @@ export class CardComponent implements OnInit {
 
   public isLoggedin = true;
 
-  @Input('user')
-  user : User;
+  // @Input('user')
+  // user : User;
   constructor() { }
 
   ngOnInit() {
-    this.user.name;
+    // this.user.name;
   }
 
   onClick(){
