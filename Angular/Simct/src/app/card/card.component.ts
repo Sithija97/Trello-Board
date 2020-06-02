@@ -8,6 +8,8 @@ import { User } from './user.module';
 })
 export class CardComponent implements OnInit {
 
+  public isLoggedin = true;
+
   @Input('user')
   user : User;
   constructor() { }
@@ -16,6 +18,10 @@ export class CardComponent implements OnInit {
     this.user.name;
     this.user.title;
     this.user.address;
+  }
+
+  onClick(){
+    console.log('Hi Sithija boy!');
   }
 
 }
