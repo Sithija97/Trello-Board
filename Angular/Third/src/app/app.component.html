@@ -1,0 +1,11 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+ 
+  <input [(ngModel)]=myname type="text">
+  <h3>{{myname}}</h3>
+
+  <input #secondvar type="text">
+  <button (click)="hellomsg(secondvar.value)">press</button>
