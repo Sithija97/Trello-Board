@@ -10,7 +10,7 @@ export class FormsComponent implements OnInit {
 
   topics = ['Angular', 'React', 'Vue'];
 
-  userModel = new User('Rob','rob@test.com',5556665566, '', 'morning', true);
+  userModel = new User('','',5556665566, '', 'morning', true);
 
   constructor() { }
 

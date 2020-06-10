@@ -3,17 +3,20 @@
   <form #userForm="ngForm">
     <div class="form-group">
       <label>Name</label>
-      <input type="text" class="form-control" name="name" required #name="ngModel" [class.is-invalid]="name.invalid" [(ngModel)]="userModel.name" />
+      <input type="text" class="form-control" name="name" required #name="ngModel" 
+      [class.is-invalid]="name.invalid && name.touched" [(ngModel)]="userModel.name" />
     </div>
 
     <div class="form-group">
       <label>Email</label>
-      <input type="email" class="form-control" name="email" [(ngModel)]="userModel.email" />
+      <input type="email" class="form-control" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+      #email="ngModel" [class.is-invalid]="email.invalid && email.touched" [(ngModel)]="userModel.email" />
     </div>
 
     <div class="form-group">
       <label>Phone</label>
-      <input type="tel" class="form-control" name="phone" [(ngModel)]="userModel.phone" />
+      <input type="tel" class="form-control" required pattern="^((\\+91-?)|0)?[0-9]{10}$" #phone = "ngModel"
+      [class.is-invalid]="phone.invalid && phone.touched"  name="phone" [(ngModel)]="userModel.phone" />
     </div>
 
     <div class="form-group">
