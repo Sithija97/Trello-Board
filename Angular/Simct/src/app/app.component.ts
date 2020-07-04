@@ -7,11 +7,12 @@ import { User } from './card/user.module';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  user:User;
+
+  public message = "";
+  public myInpt = "";
+  public text = "Sithija Shehara"
+  public name = "Nayana";
   constructor(){
-    this.user = new User();
-    this.user.name = 'Sithija'
-    this.user.title = 'SE'
-    this.user.address = 'Arewwala'
+
   }
 }

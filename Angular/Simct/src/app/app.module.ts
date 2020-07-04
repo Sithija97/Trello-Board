@@ -7,6 +7,7 @@ import { DateComponent } from './date/date.component';
 import { CardComponent } from './card/card.component';
 import { UserComponent } from './user/user.component';
 import { TWayDBindComponent } from './tway-dbind/tway-dbind.component';
+import { LastComponent } from './last/last.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { TWayDBindComponent } from './tway-dbind/tway-dbind.component';
     DateComponent,
     CardComponent,
     UserComponent,
-    TWayDBindComponent
+    TWayDBindComponent,
+    LastComponent
   ],
   imports: [
     BrowserModule,

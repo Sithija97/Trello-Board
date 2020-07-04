@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'app-tway-dbind',
@@ -7,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TWayDBindComponent implements OnInit {
 
+  //send data from child to root
+  @Output() public childEvent = new EventEmitter();
+
   input : String = "";
+
+  @Input()
+  public parentData;
+  @Input('myText') public scndText ;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  fireEvent(){
+    this.childEvent.emit('this is from child component');
   }
 
 }
