@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    background: linear-gradient(to right top, #44ddd0, #276dd7);
+}
+html, body {
+    height: 100%;
+}
+.white-text {
+    color: white;
+}
+.title {
+    color: white;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.modal-box {
+    min-height: 200px;
+    width: 100%;
+    max-width: 580px;
+    background: #201d1d;
+    border-radius: 5px;
+    padding: 35px;
+}
+.has-background-light {
+    background: #f4f4f4;
+}
+.is-primary {
+    background: blue;
+}
