@@ -55,13 +55,13 @@ module.exports.updateTask = (req, res) => {
 };
 
 //delete task
-// module.exports.deleteTask = (req, res) => {
-//   Task.findByIdAndDelete(req.params.listId)
-//     .then((list) => {
-//       res.send(list), console.log("list deleted");
-//     })
-//     .catch((err) => {
-//       console.log("error in deleting list: " + err);
-//     });
-// };
+module.exports.deleteTask = (req, res) => {
+  Task.findOneAndDelete({ _listId: req.params.listId, _id: req.params.taskId })
+    .then((list) => {
+      res.send(list), console.log("list deleted");
+    })
+    .catch((err) => {
+      console.log("error in deleting list: " + err);
+    });
+};
 

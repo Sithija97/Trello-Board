@@ -20,5 +20,6 @@ router.get('/lists/:listId/tasks',taskController.displayTask);
 router.post('/lists/:listId/tasks',taskController.addTask);
 router.get('/lists/:listId/tasks/:taskId',taskController.getOneTask);
 router.patch('/lists/:listId/tasks/:taskId',taskController.updateTask);
+router.delete('/lists/:listId/tasks/:taskId',taskController.deleteTask);
 
 module.exports = router ;

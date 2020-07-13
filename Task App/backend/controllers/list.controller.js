@@ -1,4 +1,5 @@
 const List = require("../models/list");
+const Task = require("../models/task");
 
 //test
 module.exports.hello = (req, res) => {
@@ -52,11 +53,21 @@ module.exports.updateList = (req, res) => {
 
 //delete list
 module.exports.deleteList = (req, res) => {
-  List.findByIdAndDelete(req.params.listId)
+
+  const deleteTasks = (list) => {
+    Task.deleteMany({_listId : list._id})
+      .then(()=>list)
+      .catch((err) => {
+        console.log("error in deleteTasks function: " + err);
+      });
+  }
+
+  const list = List.findByIdAndDelete(req.params.listId)
     .then((list) => {
-      res.send(list), console.log("list deleted");
+      deleteTasks(list), console.log("list deleted");
     })
     .catch((err) => {
       console.log("error in deleting list: " + err);
     });
+    res.send(list);
 };
