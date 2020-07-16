@@ -13,6 +13,10 @@
           #name="ngModel"
           [class.is-invalid]="name.invalid && name.touched"
         />
+        <small
+        class="text-danger"
+        [class.d-none]="name.valid || name.untouched"
+        >user name is required</small>
       </div>
       <div class="form-group">
         <input
@@ -25,6 +29,10 @@
           #email="ngModel"
           [class.is-invalid]="email.invalid && email.touched"
         />
+        <small
+        class="text-danger"
+        [class.d-none]="email.valid || email.untouched"
+        >email is required</small>
       </div>
       <div class="form-group">
         <input
@@ -38,6 +46,10 @@
           pattern="^\d{5}$"
           [class.is-invalid]="password.invalid && password.touched"
         />
+        <div *ngIf="password.errors && (password.invalid || password.touched)">
+          <small class="text-danger" [class.d-none]=" password.untouched" *ngIf="password.errors.required">password is required</small>
+          <small class="text-danger" [class.d-none]="password.valid" *ngIf="password.errors.pattern">password must be at least 5 digits</small>
+        </div>
       </div>
       <div class="form-group">
         <input
@@ -51,6 +63,10 @@
           pattern="^\d{5}$"
           [class.is-invalid]="conpassword.invalid && conpassword.touched"
         />
+        <div *ngIf="conpassword.errors && (conpassword.invalid || conpassword.touched)">
+          <small class="text-danger" [class.d-none]=" conpassword.untouched" *ngIf="conpassword.errors.required">password is required again</small>
+          <small class="text-danger" [class.d-none]="conpassword.valid" *ngIf="conpassword.errors.pattern">check password entered</small>
+        </div>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button><hr>
       <div class="sign-up">
