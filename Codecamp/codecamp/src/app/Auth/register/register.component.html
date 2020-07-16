@@ -32,7 +32,7 @@
           class="form-control"
           placeholder="Password"
           name="password"
-          [(ngModel)]="user.passsword"
+          [(ngModel)]="user.password"
           required
           #password="ngModel"
           [class.is-invalid]="password.invalid && password.touched"
@@ -44,7 +44,7 @@
           class="form-control"
           placeholder="Condirm Password"
           name="confirm passsword"
-          [(ngModel)]="user.confpasssword"
+          [(ngModel)]="user.confpassword"
           required
           #conpassword="ngModel"
           [class.is-invalid]="conpassword.invalid && conpassword.touched"
@@ -57,6 +57,6 @@
     </form>
     <!-- {{ regForm.value | json }} <hr>
     {{ userModel.value | json }} -->
-    {{ user.value | json }} 
+    {{ user | json }}
   </div>
 </div>
