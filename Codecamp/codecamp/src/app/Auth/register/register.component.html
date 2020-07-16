@@ -1,0 +1,62 @@
+<div class="login-page">
+  <div class="form">
+    <h1>Register</h1>
+    <form #regForm="ngForm">
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Username"
+          name="username"
+          [(ngModel)]="user.username"
+          required
+          #name="ngModel"
+          [class.is-invalid]="name.invalid && name.touched"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email address"
+          name="email"
+          [(ngModel)]="user.email"
+          required
+          #email="ngModel"
+          [class.is-invalid]="email.invalid && email.touched"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+          [(ngModel)]="user.passsword"
+          required
+          #password="ngModel"
+          [class.is-invalid]="password.invalid && password.touched"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Condirm Password"
+          name="confirm passsword"
+          [(ngModel)]="user.confpasssword"
+          required
+          #conpassword="ngModel"
+          [class.is-invalid]="conpassword.invalid && conpassword.touched"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button><hr>
+      <div class="sign-up">
+        Already have an account? <a routerLink="/login">Create One</a>
+      </div>
+    </form>
+    <!-- {{ regForm.value | json }} <hr>
+    {{ userModel.value | json }} -->
+    {{ user.value | json }} 
+  </div>
+</div>
