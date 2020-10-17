@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bulma/bulma.sass";
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700|Nunito:400,700");
+
+$blue: #034694;
+
+/*bulma global variables*/
+$family-sans-serif: "Nunito", sans-serif;
+$primary: $blue;
+
+/*bulma component variables*/
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+
+/*bulma custom global styles*/
+html {
+  background: #d7effe;
+  color: white;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.has-text-primary {
+  color: black !important;
+}
