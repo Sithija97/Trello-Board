@@ -1,5 +1,13 @@
+import Home from "./components/home/index";
+import Navbar from "./components/navbar/inedx";
+
 function App() {
-  return <div>App</div>;
+  return (
+    <>
+      <Navbar />
+      <Home />
+    </>
+  );
 }
 
 export default App;
