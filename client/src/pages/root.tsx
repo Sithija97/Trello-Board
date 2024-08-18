@@ -1,3 +1,5 @@
+import { RootLayout } from "../templates";
+
 export const Root = () => {
-  return <div>RootPage</div>;
+  return <RootLayout />;
 };

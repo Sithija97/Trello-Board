@@ -1,11 +1,15 @@
-import { Button } from "./atoms/ui/button";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 const App = () => {
   return (
-    <>
-      <Button>Click me</Button>
-      <h1 className="text-3xl font-bold">Hello world!</h1>
-    </>
+    <section
+      className={`min-h-screen ${
+        import.meta.env.VITE_DEV_ENV === "development" ? "debug-screens" : ""
+      }`}
+    >
+      <RouterProvider router={router} />
+    </section>
   );
 };
 
