@@ -27,7 +27,7 @@ export const SideNavBar = () => {
   const navigateToHome = () => navigate("/");
   const navigateToBudgets = () => navigate("/budgets");
   const navigateToIncomes = () => navigate("/incomes");
-  const navigateToExpenses = () => navigate("/expense");
+  const navigateToExpenses = () => navigate("/expenses");
 
   return (
     <div className={`relative px-3 pb-10 pt-24 ${!isCollapsed && "min-w-64"}`}>

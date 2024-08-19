@@ -5,7 +5,7 @@ import { SideNavBar } from "../organisms";
 
 export const RootLayout = () => {
   return (
-    <section className={cn("h-screen w-full flex")}>
+    <section className={cn("min-h-screen w-full flex")}>
       {/* sidebar */}
       <div className=" bg-green-600">
         <SideNavBar />

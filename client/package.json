@@ -35,16 +35,17 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
+    "emoji-picker-react": "^4.11.1",
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
     "react-resizable-panels": "^2.0.21",
+    "react-router-dom": "^6.26.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "tailwindcss-debug-screens": "^2.2.1",
-    "react-router-dom": "^6.26.0"
+    "tailwindcss-debug-screens": "^2.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

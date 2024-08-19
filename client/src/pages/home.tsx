@@ -1,10 +1,15 @@
-import Img from "../assets/Savings.svg";
+import { SummaryCardSection } from "../organisms";
+
 export const Home = () => {
   return (
-    <>
-      <div className="h-full flex items-end justify-end">
-        <img src={Img} alt="" className="h-[60%] w-1/3 pr-10 pb-10" />
-      </div>
-    </>
+    <div className="p-4 md:p-8 2xl:p-16 space-y-4">
+      <span>
+        <h2 className="text-xl font-bold tracking-tight">{`Welcome back Sithija`}</h2>
+        <p className="text-muted-foreground">
+          Here's what happening with your money, Let's manage your expenses.
+        </p>
+      </span>
+      <SummaryCardSection />
+    </div>
   );
 };
