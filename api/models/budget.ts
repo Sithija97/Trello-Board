@@ -14,7 +14,7 @@ const budgetSchema = new Schema<IBudget>({
   },
   icon: {
     type: String,
-    default: "",
+    default: "😀",
   },
   userId: {
     type: String,

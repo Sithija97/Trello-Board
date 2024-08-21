@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Budget } from "../models/index.js";
+import { Budget, Expense } from "../models/index.js";
 import { Budget as IBudget } from "../interfaces/index.js";
 
 export const budgetService = {
@@ -33,6 +33,14 @@ export const budgetService = {
 
   async deleteBudget(budgetId: string) {
     const objectId = new mongoose.Types.ObjectId(budgetId);
+    // Check if there are any expenses associated with this budget
+    const associatedExpenses = await Expense.findOne({ budgetId: objectId });
+
+    if (associatedExpenses) {
+      throw new Error(
+        "Cannot delete this budget. There are expenses associated with this budget."
+      );
+    }
     await Budget.deleteOne({ _id: objectId });
     return objectId;
   },

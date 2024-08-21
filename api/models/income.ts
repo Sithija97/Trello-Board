@@ -14,7 +14,7 @@ const incomeSchema = new Schema<IIncome>({
   },
   icon: {
     type: String,
-    default: "",
+    default: "😀",
   },
   userId: {
     type: String,

@@ -2,9 +2,15 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { budgetService } from "../services/budget.js";
 import { Budget } from "../interfaces/index.js";
+import jwt from "jsonwebtoken";
 
 // Get all budgets
 export const getBudgets = asyncHandler(async (req: Request, res: Response) => {
+  // const authHeader = req.headers["authorization"];
+  // const token = authHeader && authHeader.split(" ")[1];
+  // const decodedToken = jwt.decode(token);
+  // const userId = decodedToken.sub;
+
   const budgets = await budgetService.getAllBudgets();
   res.status(200).json(budgets);
 });

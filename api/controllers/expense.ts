@@ -2,9 +2,15 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { expenseService } from "../services/expense.js";
 import { Expense } from "../interfaces/index.js";
+import jwt from "jsonwebtoken";
 
 // Get all expenses
 export const getExpenses = asyncHandler(async (req: Request, res: Response) => {
+  // const authHeader = req.headers["authorization"];
+  // const token = authHeader && authHeader.split(" ")[1];
+  // const decodedToken = jwt.decode(token);
+  // const userId = decodedToken.sub;
+
   const expenses = await expenseService.getAllExpenses();
   res.status(200).json(expenses);
 });

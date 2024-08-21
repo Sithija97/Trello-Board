@@ -2,9 +2,15 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { incomeService } from "../services/income.js";
 import { Income } from "../interfaces/index.js";
+import jwt from "jsonwebtoken";
 
 // Get all incomes
 export const getIncomes = asyncHandler(async (req: Request, res: Response) => {
+  // const authHeader = req.headers["authorization"];
+  // const token = authHeader && authHeader.split(" ")[1];
+  // const decodedToken = jwt.decode(token);
+  // const userId = decodedToken.sub;
+
   const incomes = await incomeService.getAllIncomes();
   res.status(200).json(incomes);
 });

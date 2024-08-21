@@ -6,7 +6,12 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { logEvents, logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-import { incomeRouter, budgetRouter, expenseRouter } from "./routes/index.js";
+import {
+  incomeRouter,
+  budgetRouter,
+  expenseRouter,
+  summaryRouter,
+} from "./routes/index.js";
 import { corsOptions } from "./config/cors-options.js";
 import { protect } from "./middleware/auth.js";
 
@@ -35,6 +40,7 @@ app.use(express.json());
 app.use("/api/income", incomeRouter);
 app.use("/api/budget", budgetRouter);
 app.use("/api/expense", expenseRouter);
+app.use("/api/summary", summaryRouter);
 
 // Use the lax middleware that returns an empty auth object when unauthenticated
 app.get("/protected-endpoint", protect, (req: any, res) => {
