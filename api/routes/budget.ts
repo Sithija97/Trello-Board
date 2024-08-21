@@ -10,12 +10,12 @@ import { protect } from "../middleware/auth.js";
 
 const budgetRouter = express.Router();
 
-budgetRouter.route("/").get(protect, getBudgets).post(protect, createBudget);
+budgetRouter.route("/").get(getBudgets).post(createBudget);
 
 budgetRouter
   .route("/:budgetId")
-  .get(protect, getBudgetById)
-  .patch(protect, updateBudget)
-  .delete(protect, deleteBudget);
+  .get(getBudgetById)
+  .patch(updateBudget)
+  .delete(deleteBudget);
 
 export { budgetRouter };

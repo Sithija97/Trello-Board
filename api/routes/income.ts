@@ -10,12 +10,12 @@ import { protect } from "../middleware/auth.js";
 
 const incomeRouter = express.Router();
 
-incomeRouter.route("/").get(protect, getIncomes).post(protect, createIncome);
+incomeRouter.route("/").get(getIncomes).post(createIncome);
 
 incomeRouter
   .route("/:incomeId")
-  .get(protect, getIncomeById)
-  .patch(protect, updateIncome)
-  .delete(protect, deleteIncome);
+  .get(getIncomeById)
+  .patch(updateIncome)
+  .delete(deleteIncome);
 
 export { incomeRouter };
