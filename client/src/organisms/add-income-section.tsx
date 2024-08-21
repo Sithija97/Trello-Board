@@ -3,7 +3,6 @@ import {
   DialogContent,
   DialogTitle,
   DialogDescription,
-  DialogClose,
 } from "../atoms/ui/dialog";
 import { DialogHeader, DialogFooter } from "../atoms/ui/dialog";
 import { Input } from "../atoms/ui/input";
@@ -18,9 +17,9 @@ type IProps = {
   onClose: () => void;
 };
 
-export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
+export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
   const initialState = { name: "", amount: "" };
-  const [budget, setBudget] = useState(initialState);
+  const [income, setIncome] = useState(initialState);
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
   //   null
   // );
 
-  // const isAddBudgetDisabled = budget.name.trim() === "";
+  // const isAddIncomeDisabled = income.name.trim() === "";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -47,15 +46,15 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
     };
   }, []);
 
-  const handleAddBudget = async (
+  const handleAddIncome = async (
     e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (true) {
       // await addNewCategory(category);
-      const payload = { ...budget, icon: emojiIcon };
+      const payload = { ...income, icon: emojiIcon };
       console.log("data : ", payload);
-      setBudget(initialState);
+      setIncome(initialState);
       toast({
         title: "Category has been successfully created.",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
@@ -69,18 +68,18 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setBudget({ ...budget, [name]: value });
+    setIncome({ ...income, [name]: value });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md xl:max-w-fit">
-        <form onSubmit={handleAddBudget} className="flex flex-col gap-5">
+        <form onSubmit={handleAddIncome} className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle>Create Budget</DialogTitle>
+            <DialogTitle>Create Income</DialogTitle>
             <DialogDescription>
-              Effortlessly plan and allocate your budget for smarter financial
-              management.
+              Easily record and manage your income sources to keep track of your
+              earnings.
             </DialogDescription>
           </DialogHeader>
 
@@ -107,18 +106,18 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
             <div className="grid flex-1 gap-2 w-full">
               <Input
                 id="name"
-                placeholder="Budget Name"
+                placeholder="Income Name"
                 name="name"
-                value={budget.name}
+                value={income.name}
                 onChange={handleInputChange}
               />
             </div>
             <div className="grid flex-1 gap-2 w-full">
               <Input
                 id="amount"
-                placeholder="Budget Amount (LKR)"
+                placeholder="Income Amount (LKR)"
                 name="amount"
-                value={budget.amount}
+                value={income.amount}
                 onChange={handleInputChange}
               />
             </div>
@@ -128,7 +127,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
               type="submit"
               variant="default"
               className="ml-auto"
-              onClick={handleAddBudget}
+              onClick={handleAddIncome}
             >
               Create
             </Button>
