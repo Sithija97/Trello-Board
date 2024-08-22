@@ -4,7 +4,9 @@ import { Income as IIncome } from "../interfaces/index.js";
 
 export const incomeService = {
   async getAllIncomes() {
-    const incomes = await Income.find({}, { __v: 0 }).lean();
+    const incomes = await Income.find({}, { __v: 0 })
+      .sort({ createdAt: -1 })
+      .lean();
     return incomes;
   },
 

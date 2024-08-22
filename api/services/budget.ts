@@ -4,7 +4,9 @@ import { Budget as IBudget } from "../interfaces/index.js";
 
 export const budgetService = {
   async getAllBudgets() {
-    const budgets = await Budget.find({}, { __v: 0 }).lean();
+    const budgets = await Budget.find({}, { __v: 0 })
+      .sort({ createdAt: -1 })
+      .lean();
     return budgets;
   },
 
