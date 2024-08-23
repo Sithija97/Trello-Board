@@ -11,7 +11,6 @@ const incomeSchema = new Schema<IIncome>(
     amount: {
       type: Number,
       required: true,
-      unique: true,
     },
     icon: {
       type: String,

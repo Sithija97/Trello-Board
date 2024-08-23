@@ -11,7 +11,6 @@ const expenseSchema = new Schema<IExpense>(
     amount: {
       type: Number,
       required: true,
-      unique: true,
     },
     userId: {
       type: String,

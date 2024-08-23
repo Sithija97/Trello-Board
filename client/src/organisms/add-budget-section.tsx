@@ -12,6 +12,8 @@ import { format } from "date-fns";
 import { Button } from "../atoms/ui/button";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
+import { useAddNewBudgetMutation } from "../store/budget-slice";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 
 type IProps = {
   isOpen: boolean;
@@ -19,7 +21,15 @@ type IProps = {
 };
 
 export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
-  const initialState = { name: "", amount: "" };
+  const { userId } = useAuth();
+  const { user } = useClerk();
+
+  const initialState = {
+    name: "",
+    amount: "",
+    userId,
+    userName: user?.fullName,
+  };
   const [budget, setBudget] = useState(initialState);
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -27,8 +37,9 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
   // const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
   //   null
   // );
-
-  // const isAddBudgetDisabled = budget.name.trim() === "";
+  const [addNewBudget] = useAddNewBudgetMutation();
+  const isAddBudgetDisabled =
+    budget.name.trim() === "" || budget.amount.trim() === "";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,17 +62,16 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
     e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    if (true) {
-      // await addNewCategory(category);
+    if (!isAddBudgetDisabled) {
       const payload = { ...budget, icon: emojiIcon };
-      console.log("data : ", payload);
+      await addNewBudget(payload);
       setBudget(initialState);
       toast({
-        title: "Category has been successfully created.",
+        title: "Budget has been successfully created.",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });
-      // onClose();
+      onClose();
     }
   };
 
@@ -75,7 +85,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md xl:max-w-fit">
-        <form onSubmit={handleAddBudget} className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>Create Budget</DialogTitle>
             <DialogDescription>
@@ -89,6 +99,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
               <Button
                 variant="outline"
                 className="text-lg"
+                type="button"
                 onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
               >
                 {emojiIcon}
@@ -128,6 +139,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
               type="submit"
               variant="default"
               className="ml-auto"
+              disabled={isAddBudgetDisabled}
               onClick={handleAddBudget}
             >
               Create

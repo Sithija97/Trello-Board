@@ -11,6 +11,8 @@ import { format } from "date-fns";
 import { Button } from "../atoms/ui/button";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
+import { useAddNewIncomeMutation } from "../store/income-slice";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 
 type IProps = {
   isOpen: boolean;
@@ -18,7 +20,16 @@ type IProps = {
 };
 
 export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
-  const initialState = { name: "", amount: "" };
+  const { userId } = useAuth();
+  const { user } = useClerk();
+
+  const initialState = {
+    name: "",
+    amount: "",
+    userId,
+    userName: user?.fullName,
+  };
+
   const [income, setIncome] = useState(initialState);
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
@@ -26,8 +37,9 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
   // const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
   //   null
   // );
-
-  // const isAddIncomeDisabled = income.name.trim() === "";
+  const [addNewIncome] = useAddNewIncomeMutation();
+  const isAddIncomeDisabled =
+    income.name.trim() === "" || income.amount.trim() === "";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,17 +62,16 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
     e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    if (true) {
-      // await addNewCategory(category);
+    if (!isAddIncomeDisabled) {
       const payload = { ...income, icon: emojiIcon };
-      console.log("data : ", payload);
+      await addNewIncome(payload);
       setIncome(initialState);
       toast({
-        title: "Category has been successfully created.",
+        title: "Income has been successfully created.",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });
-      // onClose();
+      onClose();
     }
   };
 
@@ -74,7 +85,7 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md xl:max-w-fit">
-        <form onSubmit={handleAddIncome} className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>Create Income</DialogTitle>
             <DialogDescription>
@@ -88,6 +99,7 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
               <Button
                 variant="outline"
                 className="text-lg"
+                type="button"
                 onClick={() => setOpenEmojiPicker(!openEmojiPicker)}
               >
                 {emojiIcon}
@@ -127,6 +139,7 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
               type="submit"
               variant="default"
               className="ml-auto"
+              disabled={isAddIncomeDisabled}
               onClick={handleAddIncome}
             >
               Create

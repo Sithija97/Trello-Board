@@ -25,7 +25,7 @@ type IProps = {
 
 export const NavBar: FC<IProps> = ({ links, isCollapsed }) => {
   const { pathname } = useLocation();
-  // const { userId } = useAuth();
+  const { userId } = useAuth();
   return (
     <TooltipProvider>
       <div
@@ -95,7 +95,7 @@ export const NavBar: FC<IProps> = ({ links, isCollapsed }) => {
               </div>
             )
           )}
-          {/* <div
+          <div
             className={cn(
               buttonVariants({
                 variant: "ghost",
@@ -109,7 +109,7 @@ export const NavBar: FC<IProps> = ({ links, isCollapsed }) => {
                 <UserButton afterSignOutUrl="/" />
               </SignedIn>
             )}
-          </div> */}
+          </div>
         </nav>
       </div>
     </TooltipProvider>
