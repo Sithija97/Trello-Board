@@ -1,11 +1,15 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "../atoms/ui/card";
+import { useGetBudgetsQuery } from "../store/budget-slice";
+import { Budget } from "../types";
+import { BudgetCard } from "../molecules/budget-card";
 
 type IProps = {
   handleAddBudget: () => void;
 };
 
 export const BudgetTemplate = ({ handleAddBudget }: IProps) => {
+  const { data: budgets, isSuccess } = useGetBudgetsQuery({});
   return (
     <div className="p-4 md:p-8 2xl:p-16 space-y-4">
       <span>
@@ -26,6 +30,15 @@ export const BudgetTemplate = ({ handleAddBudget }: IProps) => {
             <div className="text-mdfont-semibold p-1">Create new Budget</div>
           </CardContent>
         </Card>
+        {isSuccess &&
+          budgets &&
+          budgets.map((budget: Budget) => (
+            <BudgetCard
+              name={budget.name}
+              amount={budget.amount}
+              icon={budget.icon}
+            />
+          ))}
       </div>
     </div>
   );

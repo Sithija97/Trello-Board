@@ -67,7 +67,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
       await addNewBudget(payload);
       setBudget(initialState);
       toast({
-        title: "Budget has been successfully created.",
+        title: "New Budget Created!",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });

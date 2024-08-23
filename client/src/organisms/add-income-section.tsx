@@ -67,7 +67,7 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
       await addNewIncome(payload);
       setIncome(initialState);
       toast({
-        title: "Income has been successfully created.",
+        title: "New Income Source Created!",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });
