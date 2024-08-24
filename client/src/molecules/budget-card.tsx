@@ -5,13 +5,15 @@ type IProps = {
   name: string;
   amount: number;
   icon: string;
+  onClick: () => void;
 };
 
-export const BudgetCard = ({ name, amount, icon }: IProps) => {
+export const BudgetCard = ({ name, amount, icon, onClick }: IProps) => {
   return (
     <Card
       x-chunk="dashboard-01-chunk-0"
       className="hover:bg-slate-50 cursor-pointer"
+      onClick={onClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-bold">{name}</CardTitle>

@@ -1,10 +1,11 @@
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api-slice";
+import baseReducer from "./base-slice";
 
 export const store = configureStore({
   reducer: {
-    // baseState: baseReducer,
+    baseState: baseReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

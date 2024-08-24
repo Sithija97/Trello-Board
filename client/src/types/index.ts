@@ -1,3 +1,5 @@
+import { AddBudgetModalType, AddIncomeModalType } from "../enums";
+
 export type Budget = {
   _id: string;
   name: string;
@@ -29,4 +31,12 @@ export type Expense = {
   budgetId: Budget;
   createdAt: string;
   updatedAt: string;
+};
+
+export type InitialBaseState = {
+  selectedBudget: Budget;
+  selectedIncome: Income;
+  selectedExpense: Expense;
+  budgetModalType: AddBudgetModalType.NEW | AddBudgetModalType.EDIT;
+  incomeModalType: AddIncomeModalType.NEW | AddIncomeModalType.EDIT;
 };

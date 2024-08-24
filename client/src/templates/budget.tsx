@@ -3,13 +3,31 @@ import { Card, CardHeader, CardTitle, CardContent } from "../atoms/ui/card";
 import { useGetBudgetsQuery } from "../store/budget-slice";
 import { Budget } from "../types";
 import { BudgetCard } from "../molecules/budget-card";
+import { useAppDispatch } from "../store/store";
+import { clearBudget, setBudget } from "../store/base-slice";
+import { AddBudgetModalType } from "../enums";
 
 type IProps = {
+  setType: (payload: AddBudgetModalType) => any;
   handleAddBudget: () => void;
 };
 
-export const BudgetTemplate = ({ handleAddBudget }: IProps) => {
+export const BudgetTemplate = ({ setType, handleAddBudget }: IProps) => {
+  const dispatch = useAppDispatch();
   const { data: budgets, isSuccess } = useGetBudgetsQuery({});
+
+  const setBudgetItem = (budget: Budget) => {
+    dispatch(setBudget(budget));
+    dispatch(setType(AddBudgetModalType.EDIT));
+    handleAddBudget();
+  };
+
+  const handleAddNewBudget = () => {
+    dispatch(setType(AddBudgetModalType.NEW));
+    dispatch(clearBudget());
+    handleAddBudget();
+  };
+
   return (
     <div className="p-4 md:p-8 2xl:p-16 space-y-4">
       <span>
@@ -19,7 +37,7 @@ export const BudgetTemplate = ({ handleAddBudget }: IProps) => {
         <Card
           x-chunk="dashboard-01-chunk-0"
           className="cursor-pointer"
-          onClick={handleAddBudget}
+          onClick={handleAddNewBudget}
         >
           <CardHeader className="flex flex-row items-center justify-center space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -34,9 +52,11 @@ export const BudgetTemplate = ({ handleAddBudget }: IProps) => {
           budgets &&
           budgets.map((budget: Budget) => (
             <BudgetCard
+              key={budget._id}
               name={budget.name}
               amount={budget.amount}
               icon={budget.icon}
+              onClick={() => setBudgetItem(budget)}
             />
           ))}
       </div>

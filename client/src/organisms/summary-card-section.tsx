@@ -9,7 +9,6 @@ import { useGetSummaryQuery } from "../store/summary-slice";
 
 export const SummaryCardSection = () => {
   const { data, isSuccess } = useGetSummaryQuery({});
-  console.log(data);
   return (
     isSuccess && (
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">

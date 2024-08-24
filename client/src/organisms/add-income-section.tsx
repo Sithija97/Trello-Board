@@ -13,15 +13,27 @@ import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useAddNewIncomeMutation } from "../store/income-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
+import { AddIncomeModalType } from "../enums";
+import { RootState, useAppSelector } from "../store/store";
 
 type IProps = {
   isOpen: boolean;
+  type?: AddIncomeModalType;
   onClose: () => void;
 };
 
-export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
+export const AddIncomeSection = ({
+  isOpen,
+  type = AddIncomeModalType.NEW,
+  onClose,
+}: IProps) => {
   const { userId } = useAuth();
   const { user } = useClerk();
+  const [addNewIncome] = useAddNewIncomeMutation();
+
+  const selectedIncome = useAppSelector(
+    (state: RootState) => state.baseState.selectedIncome
+  );
 
   const initialState = {
     name: "",
@@ -34,12 +46,20 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
-  // const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
-  //   null
-  // );
-  const [addNewIncome] = useAddNewIncomeMutation();
+
   const isAddIncomeDisabled =
     income.name.trim() === "" || income.amount.trim() === "";
+
+  useEffect(() => {
+    setIncome({
+      ...income,
+      name: type === AddIncomeModalType.EDIT ? selectedIncome.name : "",
+      amount:
+        type === AddIncomeModalType.EDIT
+          ? selectedIncome.amount.toString()
+          : "",
+    });
+  }, [selectedIncome._id]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -87,7 +107,11 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
       <DialogContent className="sm:max-w-md xl:max-w-fit">
         <form className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle>Create Income</DialogTitle>
+            <DialogTitle>
+              {type === AddIncomeModalType.NEW
+                ? `Create Income`
+                : `Update Income`}
+            </DialogTitle>
             <DialogDescription>
               Easily record and manage your income sources to keep track of your
               earnings.
@@ -135,15 +159,38 @@ export const AddIncomeSection = ({ isOpen, onClose }: IProps) => {
             </div>
           </div>
           <DialogFooter className="sm:justify-start">
-            <Button
-              type="submit"
-              variant="default"
-              className="ml-auto"
-              disabled={isAddIncomeDisabled}
-              onClick={handleAddIncome}
-            >
-              Create
-            </Button>
+            {type === AddIncomeModalType.EDIT ? (
+              <>
+                <Button
+                  type="button"
+                  variant="default"
+                  className="ml-auto"
+                  disabled={isAddIncomeDisabled}
+                  onClick={handleAddIncome}
+                >
+                  Update
+                </Button>
+                <Button
+                  type="submit"
+                  variant="destructive"
+                  className="ml-auto"
+                  disabled={isAddIncomeDisabled}
+                  onClick={handleAddIncome}
+                >
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <Button
+                type="button"
+                variant="default"
+                className="ml-auto"
+                disabled={isAddIncomeDisabled}
+                onClick={handleAddIncome}
+              >
+                Create
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>

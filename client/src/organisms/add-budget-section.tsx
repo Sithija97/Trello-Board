@@ -14,15 +14,23 @@ import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useAddNewBudgetMutation } from "../store/budget-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
+import { AddBudgetModalType } from "../enums";
+import { RootState, useAppSelector } from "../store/store";
 
 type IProps = {
   isOpen: boolean;
+  type?: AddBudgetModalType;
   onClose: () => void;
 };
 
-export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
+export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
   const { userId } = useAuth();
   const { user } = useClerk();
+  const [addNewBudget] = useAddNewBudgetMutation();
+
+  const selectedBudget = useAppSelector(
+    (state: RootState) => state.baseState.selectedBudget
+  );
 
   const initialState = {
     name: "",
@@ -30,16 +38,25 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
     userId,
     userName: user?.fullName,
   };
+
   const [budget, setBudget] = useState(initialState);
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
-  // const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
-  //   null
-  // );
-  const [addNewBudget] = useAddNewBudgetMutation();
+
   const isAddBudgetDisabled =
     budget.name.trim() === "" || budget.amount.trim() === "";
+
+  useEffect(() => {
+    setBudget({
+      ...budget,
+      name: type === AddBudgetModalType.EDIT ? selectedBudget.name : "",
+      amount:
+        type === AddBudgetModalType.EDIT
+          ? selectedBudget.amount.toString()
+          : "",
+    });
+  }, [selectedBudget._id]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,7 +96,7 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setBudget({ ...budget, [name]: value });
+    setBudget((prevData) => ({ ...prevData, [name]: value }));
   };
 
   return (
@@ -87,7 +104,11 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
       <DialogContent className="sm:max-w-md xl:max-w-fit">
         <form className="flex flex-col gap-5">
           <DialogHeader>
-            <DialogTitle>Create Budget</DialogTitle>
+            <DialogTitle>
+              {type === AddBudgetModalType.NEW
+                ? `Create Budget`
+                : `Update Budget`}
+            </DialogTitle>
             <DialogDescription>
               Effortlessly plan and allocate your budget for smarter financial
               management.
@@ -135,15 +156,38 @@ export const AddBudgetSection = ({ isOpen, onClose }: IProps) => {
             </div>
           </div>
           <DialogFooter className="sm:justify-start">
-            <Button
-              type="submit"
-              variant="default"
-              className="ml-auto"
-              disabled={isAddBudgetDisabled}
-              onClick={handleAddBudget}
-            >
-              Create
-            </Button>
+            {type === AddBudgetModalType.EDIT ? (
+              <>
+                <Button
+                  type="button"
+                  variant="default"
+                  className="ml-auto"
+                  disabled={isAddBudgetDisabled}
+                  onClick={handleAddBudget}
+                >
+                  Update
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  className="ml-auto"
+                  disabled={isAddBudgetDisabled}
+                  onClick={handleAddBudget}
+                >
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <Button
+                type="button"
+                variant="default"
+                className="ml-auto"
+                disabled={isAddBudgetDisabled}
+                onClick={handleAddBudget}
+              >
+                Create
+              </Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>
