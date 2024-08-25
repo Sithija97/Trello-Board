@@ -1,4 +1,4 @@
-import { Progress } from "@radix-ui/react-progress";
+import { Progress } from "../atoms/ui/progress";
 import { Card, CardHeader, CardTitle, CardContent } from "../atoms/ui/card";
 
 type IProps = {
@@ -25,7 +25,7 @@ export const BudgetCard = ({ name, amount, icon, onClick }: IProps) => {
           <p className="text-xs text-muted-foreground mb-2">0 Spend</p>
           <p className="text-xs text-muted-foreground mb-2">0 Remaining</p>
         </div>
-        <Progress value={40} />
+        <Progress value={20} />
       </CardContent>
     </Card>
   );

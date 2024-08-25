@@ -11,10 +11,14 @@ import { format } from "date-fns";
 import { Button } from "../atoms/ui/button";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
-import { useAddNewIncomeMutation } from "../store/income-slice";
+import {
+  useAddNewIncomeMutation,
+  useDeleteIncomeMutation,
+} from "../store/income-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddIncomeModalType } from "../enums";
-import { RootState, useAppSelector } from "../store/store";
+import { RootState, useAppDispatch, useAppSelector } from "../store/store";
+import { clearIncome } from "../store/base-slice";
 
 type IProps = {
   isOpen: boolean;
@@ -29,7 +33,9 @@ export const AddIncomeSection = ({
 }: IProps) => {
   const { userId } = useAuth();
   const { user } = useClerk();
+  const dispatch = useAppDispatch();
   const [addNewIncome] = useAddNewIncomeMutation();
+  const [deleteIncome] = useDeleteIncomeMutation();
 
   const selectedIncome = useAppSelector(
     (state: RootState) => state.baseState.selectedIncome
@@ -41,9 +47,10 @@ export const AddIncomeSection = ({
     userId,
     userName: user?.fullName,
   };
+  const defaultEmoji = "😀";
 
   const [income, setIncome] = useState(initialState);
-  const [emojiIcon, setEmojiIcon] = useState("😀");
+  const [emojiIcon, setEmojiIcon] = useState(defaultEmoji);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +58,7 @@ export const AddIncomeSection = ({
     income.name.trim() === "" || income.amount.trim() === "";
 
   useEffect(() => {
+    setEmojiIcon(selectedIncome.icon || defaultEmoji);
     setIncome({
       ...income,
       name: type === AddIncomeModalType.EDIT ? selectedIncome.name : "",
@@ -85,13 +93,14 @@ export const AddIncomeSection = ({
     if (!isAddIncomeDisabled) {
       const payload = { ...income, icon: emojiIcon };
       await addNewIncome(payload);
-      setIncome(initialState);
+      onClose();
       toast({
         title: "New Income Source Created!",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });
-      onClose();
+      setIncome(initialState);
+      setEmojiIcon(defaultEmoji);
     }
   };
 
@@ -100,6 +109,12 @@ export const AddIncomeSection = ({
   ) => {
     const { name, value } = e.target;
     setIncome({ ...income, [name]: value });
+  };
+
+  const handleDeleteIncome = async () => {
+    dispatch(clearIncome());
+    await deleteIncome(selectedIncome);
+    onClose();
   };
 
   return (
@@ -171,11 +186,10 @@ export const AddIncomeSection = ({
                   Update
                 </Button>
                 <Button
-                  type="submit"
+                  type="button"
                   variant="destructive"
                   className="ml-auto"
-                  disabled={isAddIncomeDisabled}
-                  onClick={handleAddIncome}
+                  onClick={handleDeleteIncome}
                 >
                   Delete
                 </Button>

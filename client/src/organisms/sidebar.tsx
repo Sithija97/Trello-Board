@@ -13,7 +13,7 @@ import { NavBar } from "../molecules";
 
 export const SideNavBar = () => {
   const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   // const [isOpen, setIsOpen] = useState(false);
   // const [isOpenFilters, setIsOpenFilters] = useState(false);
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);

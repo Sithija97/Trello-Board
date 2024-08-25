@@ -12,10 +12,14 @@ import { format } from "date-fns";
 import { Button } from "../atoms/ui/button";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
-import { useAddNewBudgetMutation } from "../store/budget-slice";
+import {
+  useAddNewBudgetMutation,
+  useDeleteBudgetMutation,
+} from "../store/budget-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddBudgetModalType } from "../enums";
-import { RootState, useAppSelector } from "../store/store";
+import { RootState, useAppDispatch, useAppSelector } from "../store/store";
+import { clearBudget } from "../store/base-slice";
 
 type IProps = {
   isOpen: boolean;
@@ -26,7 +30,9 @@ type IProps = {
 export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
   const { userId } = useAuth();
   const { user } = useClerk();
+  const dispatch = useAppDispatch();
   const [addNewBudget] = useAddNewBudgetMutation();
+  const [deleteBudget] = useDeleteBudgetMutation();
 
   const selectedBudget = useAppSelector(
     (state: RootState) => state.baseState.selectedBudget
@@ -38,9 +44,10 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
     userId,
     userName: user?.fullName,
   };
+  const defaultEmoji = "😀";
 
   const [budget, setBudget] = useState(initialState);
-  const [emojiIcon, setEmojiIcon] = useState("😀");
+  const [emojiIcon, setEmojiIcon] = useState(defaultEmoji);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +55,7 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
     budget.name.trim() === "" || budget.amount.trim() === "";
 
   useEffect(() => {
+    setEmojiIcon(selectedBudget.icon || defaultEmoji);
     setBudget({
       ...budget,
       name: type === AddBudgetModalType.EDIT ? selectedBudget.name : "",
@@ -97,6 +105,12 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
   ) => {
     const { name, value } = e.target;
     setBudget((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleDeleteBudget = async () => {
+    dispatch(clearBudget());
+    await deleteBudget(selectedBudget);
+    onClose();
   };
 
   return (
@@ -172,7 +186,7 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
                   variant="destructive"
                   className="ml-auto"
                   disabled={isAddBudgetDisabled}
-                  onClick={handleAddBudget}
+                  onClick={handleDeleteBudget}
                 >
                   Delete
                 </Button>
