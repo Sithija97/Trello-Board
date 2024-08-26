@@ -19,6 +19,7 @@ import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddIncomeModalType } from "../enums";
 import { RootState, useAppDispatch, useAppSelector } from "../store/store";
 import { clearIncome } from "../store/base-slice";
+import { FilePlus, Pencil, Trash2 } from "lucide-react";
 
 type IProps = {
   isOpen: boolean;
@@ -179,19 +180,22 @@ export const AddIncomeSection = ({
                 <Button
                   type="button"
                   variant="default"
+                  size={"sm"}
                   className="ml-auto"
                   disabled={isAddIncomeDisabled}
                   onClick={handleAddIncome}
                 >
-                  Update
+                  <Pencil className="mr-2 h-4 w-4" /> Edit
                 </Button>
+
                 <Button
                   type="button"
                   variant="destructive"
+                  size={"sm"}
                   className="ml-auto"
                   onClick={handleDeleteIncome}
                 >
-                  Delete
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete
                 </Button>
               </>
             ) : (
@@ -202,7 +206,7 @@ export const AddIncomeSection = ({
                 disabled={isAddIncomeDisabled}
                 onClick={handleAddIncome}
               >
-                Create
+                <FilePlus className="mr-2 h-4 w-4" /> Create
               </Button>
             )}
           </DialogFooter>
