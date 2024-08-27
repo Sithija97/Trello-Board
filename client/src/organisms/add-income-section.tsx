@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   useAddNewIncomeMutation,
   useDeleteIncomeMutation,
+  useUpdateIncomeMutation,
 } from "../store/income-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddIncomeModalType } from "../enums";
@@ -36,6 +37,7 @@ export const AddIncomeSection = ({
   const { user } = useClerk();
   const dispatch = useAppDispatch();
   const [addNewIncome] = useAddNewIncomeMutation();
+  const [updateIncome] = useUpdateIncomeMutation();
   const [deleteIncome] = useDeleteIncomeMutation();
 
   const selectedIncome = useAppSelector(
@@ -92,7 +94,11 @@ export const AddIncomeSection = ({
   ) => {
     e.preventDefault();
     if (!isAddIncomeDisabled) {
-      const payload = { ...income, icon: emojiIcon };
+      const payload = {
+        ...income,
+        amount: Number(income.amount),
+        icon: emojiIcon,
+      };
       await addNewIncome(payload);
       onClose();
       toast({
@@ -105,6 +111,27 @@ export const AddIncomeSection = ({
     }
   };
 
+  const handleUpdateIncome = async (
+    e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    if (!isAddIncomeDisabled) {
+      const payload = {
+        ...selectedIncome,
+        name: income.name,
+        amount: Number(income.amount),
+        icon: emojiIcon,
+      };
+      await updateIncome(payload);
+      toast({
+        title: "Income Updated!",
+        description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
+        duration: 1500,
+      });
+      onClose();
+    }
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -113,8 +140,8 @@ export const AddIncomeSection = ({
   };
 
   const handleDeleteIncome = async () => {
-    dispatch(clearIncome());
     await deleteIncome(selectedIncome);
+    dispatch(clearIncome());
     onClose();
   };
 
@@ -183,7 +210,7 @@ export const AddIncomeSection = ({
                   size={"sm"}
                   className="ml-auto"
                   disabled={isAddIncomeDisabled}
-                  onClick={handleAddIncome}
+                  onClick={handleUpdateIncome}
                 >
                   <Pencil className="mr-2 h-4 w-4" /> Edit
                 </Button>

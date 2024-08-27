@@ -3,25 +3,23 @@ import {
   DialogContent,
   DialogTitle,
   DialogDescription,
-  // DialogClose,
 } from "../atoms/ui/dialog";
 import { DialogHeader, DialogFooter } from "../atoms/ui/dialog";
 import { Input } from "../atoms/ui/input";
 import { toast } from "../atoms/ui/use-toast";
 import { format } from "date-fns";
 import { Button } from "../atoms/ui/button";
-// import EmojiPicker from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import {
   useAddNewBudgetMutation,
   useDeleteBudgetMutation,
+  useUpdateBudgetMutation,
 } from "../store/budget-slice";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddBudgetModalType } from "../enums";
 import { RootState, useAppDispatch, useAppSelector } from "../store/store";
 import { clearBudget } from "../store/base-slice";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import { FilePlus, Pencil, Trash2 } from "lucide-react";
 
 type IProps = {
@@ -35,6 +33,7 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
   const { user } = useClerk();
   const dispatch = useAppDispatch();
   const [addNewBudget] = useAddNewBudgetMutation();
+  const [updateBudget] = useUpdateBudgetMutation();
   const [deleteBudget] = useDeleteBudgetMutation();
 
   const selectedBudget = useAppSelector(
@@ -90,12 +89,37 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
     e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+    const payload = {
+      ...budget,
+      amount: Number(budget.amount),
+      icon: emojiIcon,
+    };
     if (!isAddBudgetDisabled) {
-      const payload = { ...budget, icon: emojiIcon };
       await addNewBudget(payload);
       setBudget(initialState);
       toast({
         title: "New Budget Created!",
+        description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
+        duration: 1500,
+      });
+      onClose();
+    }
+  };
+
+  const handleUpdateBudget = async (
+    e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    if (!isAddBudgetDisabled) {
+      const payload = {
+        ...selectedBudget,
+        name: budget.name,
+        amount: Number(budget.amount),
+        icon: emojiIcon,
+      };
+      await updateBudget(payload);
+      toast({
+        title: "Budget Updated!",
         description: format(new Date(), "EEEE, MMMM do, yyyy 'at' h:mm a"),
         duration: 1500,
       });
@@ -111,8 +135,8 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
   };
 
   const handleDeleteBudget = async () => {
-    dispatch(clearBudget());
     await deleteBudget(selectedBudget);
+    dispatch(clearBudget());
     onClose();
   };
 
@@ -143,25 +167,13 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
                 {emojiIcon}
               </Button>
               <div ref={emojiPickerRef} className="absolute z-20">
-                {/* <EmojiPicker
+                <EmojiPicker
                   open={openEmojiPicker}
                   onEmojiClick={(e) => {
                     setEmojiIcon(e.emoji);
                     setOpenEmojiPicker(false);
                   }}
-                /> */}
-                {openEmojiPicker && (
-                  <Picker
-                    data={data}
-                    theme="light"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    onEmojiSelect={(e: any) => {
-                      setEmojiIcon(e.native);
-                      setOpenEmojiPicker(false);
-                    }}
-                    previewPosition="none"
-                  />
-                )}
+                />
               </div>
             </div>
 
@@ -193,7 +205,7 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
                   size={"sm"}
                   className="ml-auto"
                   disabled={isAddBudgetDisabled}
-                  onClick={handleAddBudget}
+                  onClick={handleUpdateBudget}
                 >
                   <Pencil className="mr-2 h-4 w-4" /> Edit
                 </Button>
