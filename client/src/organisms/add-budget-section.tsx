@@ -20,15 +20,21 @@ import { useAuth, useClerk } from "@clerk/clerk-react";
 import { AddBudgetModalType } from "../enums";
 import { RootState, useAppDispatch, useAppSelector } from "../store/store";
 import { clearBudget } from "../store/base-slice";
-import { FilePlus, Pencil, Trash2 } from "lucide-react";
+import { FilePlus, Pencil, SquarePlus, Trash2 } from "lucide-react";
 
 type IProps = {
   isOpen: boolean;
   type?: AddBudgetModalType;
+  setExpenseOpen: () => void;
   onClose: () => void;
 };
 
-export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
+export const AddBudgetSection = ({
+  isOpen,
+  type,
+  onClose,
+  setExpenseOpen,
+}: IProps) => {
   const { userId } = useAuth();
   const { user } = useClerk();
   const dispatch = useAppDispatch();
@@ -140,6 +146,11 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
     onClose();
   };
 
+  const handleAddExpense = () => {
+    onClose();
+    setExpenseOpen();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md xl:max-w-fit">
@@ -199,6 +210,16 @@ export const AddBudgetSection = ({ isOpen, type, onClose }: IProps) => {
           <DialogFooter className="sm:justify-start">
             {type === AddBudgetModalType.EDIT ? (
               <>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size={"sm"}
+                  className="ml-auto"
+                  disabled={isAddBudgetDisabled}
+                  onClick={handleAddExpense}
+                >
+                  <SquarePlus className="mr-2 h-4 w-4" /> Add Expense
+                </Button>
                 <Button
                   type="button"
                   variant="default"
