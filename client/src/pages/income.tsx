@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IncomeTemplate } from "../templates/income";
+import { IncomeTemplate } from "../templates";
 import { AddIncomeSection } from "../organisms";
 import { setIncomeModalType } from "../store/base-slice";
 import { RootState, useAppSelector } from "../store/store";
