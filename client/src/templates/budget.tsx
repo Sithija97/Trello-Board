@@ -53,9 +53,7 @@ export const BudgetTemplate = ({ setType, handleAddBudget }: IProps) => {
           budgets.map((budget: Budget) => (
             <BudgetCard
               key={budget._id}
-              name={budget.name}
-              amount={budget.amount}
-              icon={budget.icon}
+              budget={budget}
               onClick={() => setBudgetItem(budget)}
             />
           ))}

@@ -9,6 +9,8 @@ export type Budget = {
   userName: string;
   createdAt: string;
   updatedAt: string;
+  spent: number;
+  remaining: number;
 };
 
 export type Income = {

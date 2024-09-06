@@ -7,16 +7,45 @@ export const budgetService = {
     const budgets = await Budget.find({}, { __v: 0 })
       .sort({ createdAt: -1 })
       .lean();
-    return budgets;
+
+    const budgetIds = budgets.map((budget) => budget._id);
+    const expenses = await Expense.aggregate([
+      { $match: { budgetId: { $in: budgetIds } } },
+      { $group: { _id: "$budgetId", totalSpent: { $sum: "$amount" } } },
+    ]);
+
+    // Convert the expense aggregation results to a map using string keys
+    const expenseMap = expenses.reduce((acc, expense) => {
+      acc[expense._id.toString()] = expense.totalSpent;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const budgetsWithSpentAndRemaining = budgets.map((budget) => {
+      const spent = expenseMap[budget._id.toString()] || 0;
+      const remaining = budget.amount - spent;
+      return { ...budget, spent, remaining };
+    });
+
+    return budgetsWithSpentAndRemaining;
   },
 
   async getBudgetById(budgetId: string) {
     const objectId = new mongoose.Types.ObjectId(budgetId);
     const budget = await Budget.findById(objectId, { __v: 0 }).lean();
+
     if (!budget) {
       throw new Error("Budget not found");
     }
-    return budget;
+
+    const expenses = await Expense.aggregate([
+      { $match: { budgetId: objectId } },
+      { $group: { _id: "$budgetId", totalSpent: { $sum: "$amount" } } },
+    ]);
+
+    const spent = expenses.length ? expenses[0].totalSpent : 0;
+    const remaining = budget.amount - spent;
+
+    return { ...budget, spent, remaining };
   },
 
   async createBudget(budget: IBudget) {
