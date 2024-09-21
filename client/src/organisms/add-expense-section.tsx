@@ -8,7 +8,7 @@ import { FilePlus } from "lucide-react";
 import { Button } from "../atoms/ui/button";
 import { DialogHeader, DialogFooter } from "../atoms/ui/dialog";
 import { Input } from "../atoms/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 import { RootState, useAppSelector } from "../store/store";
 import { toast } from "../atoms/ui/use-toast";
@@ -54,6 +54,7 @@ export const AddExpenseSection = ({ isOpen, type, onClose }: IProps) => {
     e.preventDefault();
     const payload = {
       ...expense,
+      budgetId: selectedBudget._id,
       amount: Number(expense.amount),
     };
     if (!isAddExpenseDisabled) {

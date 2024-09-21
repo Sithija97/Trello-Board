@@ -1,9 +1,5 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Input } from "../atoms/ui/input";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { Button } from "../atoms/ui/button";
-import { priorities, statuses } from "../data/tasks";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -13,11 +9,11 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  // const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 items-center space-x-2 pb-3">
         <Input
           placeholder="Filter expenses..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
