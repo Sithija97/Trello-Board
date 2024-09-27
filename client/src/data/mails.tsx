@@ -154,7 +154,7 @@
 //     name: "Chloe Hall",
 //     email: "chloehall@example.com",
 //     subject: "Re: Budget Approval",
-//     text: "The budget has been approved. We can proceed with the project. I'm delighted to inform you that our budget proposal has received the green light from the finance department. This is a significant milestone, and it means we can move forward with the project as planned.\n\nI've attached the finalized budget for your reference. Let's ensure that we stay on track and deliver the project on time and within budget.\n\nIt's an exciting time for us! Chloe",
+//     text: "The budget has been approved. We can proceed with the project. I'm delighted to inform you that our budget proposal has received the purple light from the finance department. This is a significant milestone, and it means we can move forward with the project as planned.\n\nI've attached the finalized budget for your reference. Let's ensure that we stay on track and deliver the project on time and within budget.\n\nIt's an exciting time for us! Chloe",
 //     date: "2022-08-10T16:45:00",
 //     read: true,
 //     labels: ["work", "budget"],

@@ -26,15 +26,15 @@ const chartConfig = {
   },
   settled: {
     label: "Total Incomes",
-    color: "hsl(142 88% 28%)",
+    color: "hsl(258.3 89.5% 66.3%)",
   },
   ongoing: {
     label: "Total Expenses",
-    color: "hsl(140 74% 44%)",
+    color: "hsl(255.1 91.7% 76.3%)",
   },
   mc: {
     label: "Total Budgets",
-    color: "hsl(145, 45%, 65%)",
+    color: "hsl(250.5 95.2% 91.8%)",
   },
 } satisfies ChartConfig;
 
